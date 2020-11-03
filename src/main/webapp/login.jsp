@@ -10,19 +10,38 @@
 <html>
 <head>
     <title>Please login</title>
-    <c:if test="${param.userName.equalsIgnoreCase(\"admin\") && param.password.equals(\"password\")}">
-        <meta http-equiv="Refresh" content="0; url='/profile.jsp'" />
-    </c:if>
 </head>
 <body>
 
+<%
+    String userName = request.getParameter("userName");
+    String password = request.getParameter("password");
+    boolean isNull = (userName == null || password == null);
+
+    request.setAttribute("userName", userName);
+    request.setAttribute("password", password);
+    request.setAttribute("isNull", isNull);
+
+    if (!isNull) {
+        request.setAttribute("condition", userName.equalsIgnoreCase("admin") && password.equals("password"));
+    } else {
+        request.setAttribute("condition", false);
+    }
+%>
+
 <form method="post">
     <label for="userName">Name:</label>
-    <input name="userName" id="userName" type="text">
+    <input name="userName" id="userName" type="text" value="${userName}" autofocus>
     <label for="password">Password:</label>
     <input name="password" id="password" type="password">
     <input type="submit">
 </form>
 
+    <c:if test="${condition}">
+        <meta http-equiv="Refresh" content="0; url='/profile.jsp'" />
+    </c:if>
+    <c:if test="${!isNull}">
+        <h4 style="color: red;">Login failed!</h4>
+    </c:if>
 </body>
 </html>
