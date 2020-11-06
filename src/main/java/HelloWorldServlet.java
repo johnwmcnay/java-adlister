@@ -11,12 +11,11 @@ public class HelloWorldServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
 
-        if (session.getAttribute("user") != null && session.getAttribute("user").equals(true)) {
+        if (session.getAttribute("user") != null) {
             response.sendRedirect("/profile");
             return;
-        } else {
-            session.setAttribute("user", false);
         }
+
         request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
     }
 }
