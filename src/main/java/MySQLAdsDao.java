@@ -1,6 +1,7 @@
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import com.mysql.cj.jdbc.Driver;
 
 public class MySQLAdsDao implements Ads {
 
@@ -9,6 +10,7 @@ public class MySQLAdsDao implements Ads {
     public MySQLAdsDao(Config config) {
 
         try {
+            DriverManager.registerDriver(new Driver());
             connection = DriverManager.getConnection(
                     config.getUrl(),
                     config.getUser(),
@@ -24,7 +26,6 @@ public class MySQLAdsDao implements Ads {
 
         List<Ad> ads = new ArrayList<>();
         String selectQuery = "SELECT * FROM ads";
-
         Statement stmt;
         try {
             stmt = connection.createStatement();
@@ -48,23 +49,24 @@ public class MySQLAdsDao implements Ads {
 
     @Override
     public Long insert(Ad ad) {
-        String selectQuery = String.format(
+        String insertQuery = String.format(
                 "INSERT INTO ads (user_id, title, description) VALUES ('%d', '%s', '%s')",
                 ad.getUserId(),
                 ad.getTitle(),
                 ad.getDescription()
         );
 
-        Statement stmt;
         try {
-            stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(selectQuery);
-
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(insertQuery, Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = stmt.getGeneratedKeys();
+            rs.next();
+            return rs.getLong(1);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-        return null;
+        return 0L;
     }
 }
