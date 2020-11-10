@@ -1,15 +1,5 @@
-<%--Refactor to use prepared statements--%>
 
-<%--Refactor your MySQLAdsDao to use prepared statements. Test these changes and ensure everything still works.--%>
 
-<%--Create an implementation for the Users interface--%>
-
-<%--Create a class named MySQLUsersDao that implements Users. Add functionality to the DaoFactory class to return an instance of the users data access object.--%>
-
-<%--Allow users to create an account in your application--%>
-
-<%--Create a form for users registration named register.jsp.--%>
-<%--Create a servlet named RegisterServlet and write the necessary logic.--%>
 <%--Make your login servlet actually log in users from your database--%>
 
 <%--There are some comments marked TODO inside the LoginServlet to help you get started.--%>
