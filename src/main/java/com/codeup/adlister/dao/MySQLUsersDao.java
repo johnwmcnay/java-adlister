@@ -23,9 +23,31 @@ public class MySQLUsersDao implements Users {
     }
 
     @Override
-    public User findByUsername(String username) {
-        return null;
+    public User findByUsername(String username) throws SQLException {
+
+        String sql = "SELECT * FROM users WHERE username = ?";
+
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setString(1, username);
+
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+
+            User user = new User(
+                    rs.getLong("id"),
+                    rs.getString("username"),
+                    rs.getString("email"),
+                    rs.getString("password")
+            );
+
+            return user;
+        } else {
+            return null;
+        }
     }
+
+
 
     @Override
     public Long insert(User user) {
@@ -51,4 +73,6 @@ public class MySQLUsersDao implements Users {
 
         return stmt;
     }
+
+
 }
